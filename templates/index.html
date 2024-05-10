@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Word Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom right, #4CAF50, #2196F3);
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #inputText {
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        #result {
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+    <script>
+        function predictWord() {
+            const inputText = document.getElementById("inputText").value;
+
+            fetch("/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ text: inputText })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("result").innerText = "Predicted Word: " + data.predicted_word;
+                })
+                .catch(err => console.error("Error:", err));
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Word Predictor</h1>
+        <label for="inputText">Enter text:</label>
+        <input type="text" id="inputText" />
+        <button onclick="predictWord()">Predict Next Word</button>
+        <p id="result"></p>
+    </div>
+</body>
+
+</html>
